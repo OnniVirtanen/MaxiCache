@@ -1,4 +1,4 @@
-package org.maxicache;
+package org.maxicache.interfaces;
 
 public interface MaxiCache {
 
