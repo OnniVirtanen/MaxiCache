@@ -2,13 +2,13 @@ package org.maxicache.implementation;
 
 import org.maxicache.exception.CommandException;
 import org.maxicache.exception.NodeException;
-import org.maxicache.interfaces.MaxiCache;
+import org.maxicache.interfaces.CacheClient;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.regex.Pattern;
 
-public class Node implements MaxiCache {
+public class Node implements CacheClient {
 
     private final Socket socket;
     final String PORT_PATTERN = "^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$";
