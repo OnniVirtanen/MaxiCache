@@ -1,12 +1,12 @@
 package org.maxicache.exception;
 
-public class NodeException extends RuntimeException {
+public class CacheClientException extends RuntimeException {
 
-    public NodeException(String message) {
+    public CacheClientException(String message) {
         super(message);
     }
 
-    public NodeException(String message, Throwable error) {
+    public CacheClientException(String message, Throwable error) {
         super(message, error);
     }
 

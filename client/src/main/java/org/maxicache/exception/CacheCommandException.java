@@ -1,8 +1,8 @@
 package org.maxicache.exception;
 
-public class CommandException extends RuntimeException {
+public class CacheCommandException extends RuntimeException {
 
-    public CommandException(String message) {
+    public CacheCommandException(String message) {
         super(message);
     }
 
