@@ -1,16 +1,13 @@
-package org.maxicache.implementation;
+package org.maxicache.shared;
 
-import java.io.Serializable;
-
-public class SetCacheCall implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SetCacheCall extends CacheCall {
 
     private final String key;
     private final String value;
     private final int ttl;
 
     public SetCacheCall(String key, String value, int ttl) {
+        super("set");
         this.key = key;
         this.value = value;
         this.ttl = ttl;

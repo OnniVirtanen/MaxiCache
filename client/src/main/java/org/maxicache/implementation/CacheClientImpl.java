@@ -7,12 +7,13 @@ import org.maxicache.interfaces.CacheClient;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.maxicache.shared.GetCacheCall;
+import org.maxicache.shared.SetCacheCall;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.regex.Pattern;
@@ -32,7 +33,9 @@ public class CacheClientImpl implements CacheClient {
 
     private Socket createSocket(String ip, int port) {
         try {
-            return new Socket(ip, port);
+            Socket socket = new Socket(ip, port);
+            socket.setKeepAlive(true);
+            return socket;
         } catch (IOException e) {
             throw new CacheClientException("Could not obtain connection to the server", e);
         }
@@ -67,12 +70,12 @@ public class CacheClientImpl implements CacheClient {
     private String sendCall(Serializable call) {
         try {
             // Setup output stream to send data to the server
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
             // Setup input stream to receive data from the server
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             // Send message to the server
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(call);
 
             // Receive response from the server
