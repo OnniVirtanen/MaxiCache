@@ -23,7 +23,7 @@ public class ExampleController {
 
     @PostMapping
     public void saveBrand() {
-        int ttlSeconds = 100;
+        int ttlSeconds = 15;
         cacheClient.set("car", "volvo", ttlSeconds);
     }
 
