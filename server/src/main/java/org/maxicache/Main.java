@@ -6,10 +6,10 @@ public class Main {
         SocketServer server = new SocketServer(port);
         server.startServer();
 
-        // Automatically shutdown in 1 minute
-        int minutes = 60 * 10000;
+        // Automatically shutdown in 60 minutes
+        int hour = 3_600_000;
         try {
-            Thread.sleep(minutes);
+            Thread.sleep(hour);
         } catch (Exception e) {
             e.printStackTrace();
         }

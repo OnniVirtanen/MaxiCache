@@ -102,7 +102,8 @@ public class CacheClientImpl implements CacheClient {
         }
     }
 
-    public void close() {
+    @Override
+    public void closeConnection() {
         try {
             in.close();
             out.close();

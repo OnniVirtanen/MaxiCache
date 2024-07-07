@@ -29,4 +29,12 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>maxicache-cache-client</id>
+            <name>maxicache-cache-client</name>
+            <url>https://maxicache-664021163663.d.codeartifact.eu-north-1.amazonaws.com/maven/cache-client/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
