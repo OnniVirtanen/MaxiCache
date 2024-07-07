@@ -23,8 +23,10 @@ public class ExampleController {
 
     @PostMapping
     public void saveBrand() {
+        String key = "car";
+        String value = "volvo";
         int ttlSeconds = 15;
-        cacheClient.set("car", "volvo", ttlSeconds);
+        cacheClient.set(key, value, ttlSeconds);
     }
 
 }
