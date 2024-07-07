@@ -6,14 +6,20 @@ public class Main {
         SocketServer server = new SocketServer(port);
         server.startServer();
 
-        // Automatically shutdown in 60 minutes
-        int hour = 3_600_000;
+        // Add a shutdown hook to stop the server when the JVM is shutting down
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                server.stopServer();
+                System.out.println("Server stopped due to JVM shutdown.");
+            }
+        }));
+
+        // Keep the main thread running
         try {
-            Thread.sleep(hour);
-        } catch (Exception e) {
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        server.stopServer();
     }
 }
