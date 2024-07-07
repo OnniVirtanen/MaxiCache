@@ -7,9 +7,9 @@ public class Main {
         server.startServer();
 
         // Automatically shutdown in 1 minute
-        int minutes = 60 * 10000;
+        int minute = 1000;
         try {
-            Thread.sleep(minutes);
+            Thread.sleep(minute);
         } catch (Exception e) {
             e.printStackTrace();
         }
