@@ -33,6 +33,7 @@ public class CacheClientImpl implements CacheClient {
         this.socket = createSocket(ip, port);
         this.out = createOutputStream(this.socket);
         this.in = createInputStream(this.socket);
+        Runtime.getRuntime().addShutdownHook(new Thread(this::closeConnection));
     }
 
     private Socket createSocket(String ip, int port) {
@@ -102,14 +103,16 @@ public class CacheClientImpl implements CacheClient {
         }
     }
 
-    @Override
-    public void closeConnection() {
+    private void closeConnection() {
         try {
             in.close();
             out.close();
             socket.close();
+            logger.info("Connection closed successfully.");
         } catch (IOException e) {
+            logger.error("Error closing resources", e);
             throw new CacheClientException("Error closing resources", e);
         }
     }
+
 }

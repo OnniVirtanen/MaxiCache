@@ -8,6 +8,16 @@ public class InMemoryDataStore implements DataStore {
 
     private final ConcurrentHashMap<String, ValueWithTTL> dataMap = new ConcurrentHashMap<>();
 
+    private InMemoryDataStore() {}
+
+    private static class SingletonHelper {
+        private static final InMemoryDataStore INSTANCE = new InMemoryDataStore();
+    }
+
+    public static InMemoryDataStore getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
     @Override
     public void set(String key, String value, int ttl) {
         Calendar cal = Calendar.getInstance();

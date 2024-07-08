@@ -1,9 +1,12 @@
 package org.maxicache;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.maxicache.shared.CacheCall;
 import org.maxicache.shared.GetCacheCall;
 import org.maxicache.shared.SetCacheCall;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -13,16 +16,17 @@ public class RequestHandler extends Thread {
 
     private final Socket socket;
     private final DataStore dataStore;
+    private static final Logger logger = LogManager.getLogger(RequestHandler.class);
 
     RequestHandler(Socket socket) {
         this.socket = socket;
-        this.dataStore = new InMemoryDataStore();
+        this.dataStore = InMemoryDataStore.getInstance();
     }
 
     @Override
     public void run() {
         try {
-            System.out.println("Received a connection");
+            logger.debug("Received a connection");
 
             // Get input and output streams
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -35,18 +39,25 @@ public class RequestHandler extends Thread {
                     // Read message from client
                     if (call.getName().equals("set")) {
                         SetCacheCall setCall = (SetCacheCall) call;
-                        System.out.println("Client says: " + setCall.getKey() + setCall.getValue() + setCall.getTtl());
                         dataStore.set(setCall.getKey(), setCall.getValue(), setCall.getTtl());
-                        out.println("successfull set call");
+                        logger.info("client request: ", setCall.getName(), setCall.getKey(), setCall.getValue(), setCall.getTtl());
+                        out.println("success");
                     } else if (call.getName().equals("get")) {
                         GetCacheCall getCall = (GetCacheCall) call;
-                        System.out.println("Client says: " + getCall.getKey());
+                        logger.info("client request: ", getCall.getName(), getCall.getKey());
                         out.println(dataStore.get(getCall.getKey()));
                     }
 
                     out.flush();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                } catch (EOFException e) {
+                    // Client has closed the connection
+                    logger.debug("Client disconnected.");
+                    break;
+                } catch (IOException e) {
+                    logger.error("IOException", e);
+                    break;
+                } catch (ClassNotFoundException e) {
+                    logger.error("Class not found", e);
                     break;
                 }
             }
